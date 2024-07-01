@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Facebook Login JavaScript Example</title>
+  </head>
+  <body>
+    <fb:login-button scope="public_profile,email" onlogin="checkLoginState();">
+    </fb:login-button>
+
+    <div id="status"></div>
+
+    <script>
+      window.fbAsyncInit = function () {
+        FB.init({
+          appId: "1675144776566721",
+          cookie: true,
+          xfbml: true,
+          version: "v10.0",
+        });
+
+        FB.AppEvents.logPageView();
+      };
+
+      (function (d, s, id) {
+        var js,
+          fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) {
+          return;
+        }
+        js = d.createElement(s);
+        js.id = id;
+        js.src = "https://connect.facebook.net/en_US/sdk.js";
+        fjs.parentNode.insertBefore(js, fjs);
+      })(document, "script", "facebook-jssdk");
+
+      function checkLoginState() {
+        FB.getLoginStatus(function (response) {
+          statusChangeCallback(response);
+        });
+      }
+
+      function statusChangeCallback(response) {
+        if (response.status === "connected") {
+          // Logged into your app and Facebook.
+          window.location.href =
+            "callback.php?access_token=" + response.authResponse.accessToken;
+        } else {
+          // The person is not logged into your app or we are unable to tell.
+          document.getElementById("status").innerHTML =
+            "Please log into this app.";
+        }
+      }
+    </script>
+  </body>
+</html>
